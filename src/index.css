@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: "Outfit", sans-serif;
+}
+
+.font-prata {
+    font-family: "Prata", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+a.active {
+    background-color: black;
+    color: white;
+}
+
+.flying-div{
+    animation: fly_to_cart 2s ease-in-out;
+}
+
+@keyframes fly_to_cart {
+    0%{
+        left: 20%;
+        top: 300px;
+        opacity: 1;
+    }
+    60% {
+        top: 300px;
+        left: 70%;
+        opacity: 1;
+    }
+    100%{
+        left: 95%;
+        top: -100px;
+        opacity: 1;
+        transform: scale(.1);
+    }
+}
+
+@layer utilities {
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .nav-link-sm{
+        @apply border-y hover:bg-black p-4 rounded-lg hover:text-white transition-all;
+    }
+}
