@@ -4,10 +4,14 @@ import axios from 'axios';
 import { products } from '../assets/assets';
 import { Bounce, toast } from 'react-toastify';
 import { AxiosProvider } from 'react-axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCartItems } from '../stores/cart';
 
 export const ShopContext = createContext();
 
 export const ShopContextProvider = (props) => {
+
+    const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -51,87 +55,33 @@ export const ShopContextProvider = (props) => {
 
     const currency = '৳';
 
-    const delivery_fee = 60;
+    const delivery_fee_Inside = 60;
+    const delivery_fee_Outside = 120;
 
     const [search, setSearch] = useState('');
 
     const [showSearch, setShowSearch] = useState(false);
 
-    const [cartItems, setCartItems] = useState({});
+    const [totalQuantity, setTotalQuantity] = useState(0);
 
 
-    const addToCart = async (itemId) => {
 
-        // if (!size) {
-        //     toast.error('Please select the product size!', {
-        //         position: "top-right",
-        //         autoClose: 2000,
-        //         theme: "light",
-        //         transition: Bounce,
-        //     });
-        //     return;
-        // }
-
-        let cartData = structuredClone(cartItems);
-
-        if (cartData[itemId]) {
-            if (cartData[itemId]) {
-                cartData[itemId] += 1;
-            }
-            else {
-                cartData[itemId] = 1;
-            }
-        }
-        else {
-            cartData[itemId] = {};
-            cartData[itemId] = 1;
-        }
-
-        toast.success('Added to cart, Successfully', {
-            position: "top-right",
-            autoClose: 2000,
-            theme: "light",
-            transition: Bounce,
-        });
+    const [cartMenu, setCartMenu] = useState(false);
 
 
-        setCartItems(cartData);
-    }
+    const cart = useSelector(state => state.cart)
+    const { cartItems } = cart;
 
-    // useEffect(() => {
-    //     // const count = Object.keys(cartItems).length;
-    // }, [cartItems]);
-
-    const updateQuantity = async (itemId, quantity) => {
-        let cartData = structuredClone(cartItems);
-
-        cartData[itemId] = quantity;
-
-        setCartItems(cartData);
-    }
-
-    const getCartAmount = () => {
-        let totalAmount = 0;
-        for (const items in cartItems) {
-            let itemInfo = products.find((product) => product._id === items);
-            for (const item in cartItems[items]) {
-                try {
-                    if (cartItems[items][item] > 0) {
-                        totalAmount += itemInfo.price * cartItems[items][item];
-                    }
-                }
-                catch (error) {
-                    console.log(error);
-                }
-            }
-        }
-        return totalAmount;
-    }
+    useEffect(() => {
+        let subQuantity = 0;
+        cartItems.forEach(item => subQuantity += item.quantity);
+        setTotalQuantity(subQuantity);
+    }, [cartItems]);
 
 
 
     const value = {
-        isLoading, products, currency, delivery_fee, search, setSearch, showSearch, setShowSearch, addToCart, cartItems, updateQuantity, getCartAmount, categories, setCategories
+        isLoading, products, currency, delivery_fee_Inside, delivery_fee_Outside, search, setSearch, showSearch, setShowSearch, cartItems, totalQuantity, setCartMenu, cartMenu, categories
     }
 
     return (

@@ -20,13 +20,13 @@ import { ShopContext } from './context/ShopContext'
 import { useContext } from 'react'
 function App() {
 
-  
+
 
   return (
-    
 
+    // sm:px-[5vw] md:px-[7vw] px-4 lg:px-[9vw]
     <>
-      <div className='relative px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
+      <div className='relative mx-auto px-2 lg:px-0 container'>
         <ToastContainer />
         <Navbar />
         <SearchBar />

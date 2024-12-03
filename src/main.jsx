@@ -6,14 +6,20 @@ import {
   BrowserRouter
 } from "react-router-dom";
 import { ShopContextProvider } from "./context/ShopContext.jsx";
+import { Provider } from "react-redux";
+import store from "./stores/index.js";
+
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
   //   <RouterProvider router={router} />
   // </React.StrictMode>
-  <BrowserRouter>
-    <ShopContextProvider>
-      <App />
-    </ShopContextProvider>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <ShopContextProvider>
+        <App />
+      </ShopContextProvider>
+    </BrowserRouter>
+  </Provider>,
 );

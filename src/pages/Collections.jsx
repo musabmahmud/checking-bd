@@ -6,7 +6,7 @@ import ProductItem from '../components/ProductItem';
 
 const Collections = () => {
 
-  const { products, search, showSearch,categories } = useContext(ShopContext);
+  const { products, search, showSearch, categories } = useContext(ShopContext);
 
   const [showFilter, setShowFilter] = useState(false);
 
@@ -55,13 +55,16 @@ const Collections = () => {
     }
 
   }
+  useEffect(() => {
+    setFilterProducts(products);
+  }, [products]);
 
   useEffect(() => {
     applyFilter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, showSearch, search]);
 
-  
+
   useEffect(() => {
     applyFilter();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,20 +75,16 @@ const Collections = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType]);
 
-  useEffect(() => {
-    setFilterProducts(products);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType]);
 
   return (
-    <div className='flex sm:flex-row flex-col gap-1 sm:gap-10 pt-10 border-t'>
+    <div className='flex sm:flex-row flex-col gap-1 sm:gap-10 py-10 border-t'>
       {/* lEFT Filter Option */}
       <div className="min-w-60">
         <a onClick={() => setShowFilter(!showFilter)} className='flex items-center gap-2 my-2 text-xl cursor-pointer'>FILTERS
           <img className={`h-3 sm:hidden  transition ease-in-out duration-200 ${showFilter ? 'rotate-90' : ''}`} src={assets.dropdown_icon} alt="" />
         </a>
         {/* Category Filter  */}
-        <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFilter ? '' : 'hidden'} sm:block`}>
+        <div className={`border border-gray-300 pl-5 rounded py-3 mt-6 ${showFilter ? '' : 'hidden'} sm:block`}>
           <p className="mb-3 font-medium text-sm">CATEGORIES</p>
           <div className="flex flex-col gap-5 font-medium text-gray-700 text-sm">
 

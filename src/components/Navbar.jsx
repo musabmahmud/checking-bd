@@ -4,20 +4,14 @@ import { assets } from '../assets/assets'
 import logo from '/assets/logo/logo.png';
 import { Link, NavLink } from "react-router-dom";
 import { ShopContext } from '../context/ShopContext';
+import MobileMenu from './MobileMenu';
+import CartMenu from './CartMenu';
+import MobileBottomMenu from './MobileBottomMenu';
 const Navbar = () => {
 
     const [visible, setVisible] = useState(false);
-    const [cartMenu, setCartMenu] = useState(false);
-    const [count, setCount] = useState(0);
 
-
-
-    const { showSearch, setShowSearch, cartItems } = useContext(ShopContext);
-
-    useEffect(() => {
-        const totalCount = Object.keys(cartItems).length;
-        setCount(totalCount);
-    }, [cartItems]);
+    const { showSearch, setShowSearch, cartItems, totalQuantity, setCartMenu, cartMenu } = useContext(ShopContext);
 
     return (
         <nav className='flex justify-between items-center py-5 font-medium'>
@@ -26,7 +20,7 @@ const Navbar = () => {
             <Link to='/'><img src={logo} className='w-36' alt="Logo" />
             </Link>
             {/* Nav Items  */}
-            <ul className='sm:flex gap-5 hidden text-gray-500 text-sm'>
+            <div className='sm:flex gap-5 hidden text-gray-500 text-sm'>
                 <NavLink to="/" className="flex flex-col items-center gap-1">
                     <p>HOME</p>
                     <hr className='hidden bg-gray-500 border-none w-2/4 h-[1.5px]' />
@@ -37,7 +31,6 @@ const Navbar = () => {
                     <hr className='hidden bg-gray-500 border-none w-2/4 h-[1.5px]' />
                 </NavLink>
 
-
                 <NavLink to="/about" className="flex flex-col items-center gap-1">
                     <p>ABOUT</p>
                     <hr className='hidden bg-gray-500 border-none w-2/4 h-[1.5px]' />
@@ -47,7 +40,7 @@ const Navbar = () => {
                     <p>CONTACT</p>
                     <hr className='hidden bg-gray-500 border-none w-2/4 h-[1.5px]' />
                 </NavLink>
-            </ul>
+            </div>
 
             <div className='flex items-center gap-6'>
 
@@ -70,63 +63,27 @@ const Navbar = () => {
                 </div>
 
                 {/* shopping cart  */}
-                <Link to='/cart' className='relative'>
+                <div onClick={() => setCartMenu(true)} className='sm:block relative hidden cursor-pointer'>
                     <img src={assets.cart_icon} className='w-5 min-w-5' alt="" />
-                    <span className='right-[-5px] bottom-[-5px] absolute bg-black rounded-full w-4 text-[8px] text-center text-white leading-4 aspect-square'>{count}</span>
-                </Link>
+                    <span className={`inline-flex top-3 -right-3 absolute justify-center items-center bg-sky-400 rounded-full w-5 h-5 font-semibold text-md text-white ${totalQuantity > 0 && 'animate-ping'}`}></span>
+                    <span className="top-3 -right-3 absolute flex justify-center items-center bg-black rounded-full w-5 h-5 text-white text-xs">{totalQuantity}</span>
+                    {/* <span className='right-[-5px] bottom-[-5px] absolute bg-black rounded-full w-4 text-[8px] text-center text-white leading-4 aspect-square'>{totalQuantity}</span> */}
+                </div>
                 {/* sidebar menu  */}
                 <img onClick={() => setVisible(true)} src={assets.menu_icon} className='sm:hidden w-5 cursor-pointer' alt="" />
             </div>
 
-            {/* Navbar Menu  */}
-            {/* <div className={`absolute inset-0 z-50 bg-white transition-all w-full h-full ${visible ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className='flex flex-col p-4 text-gray-600'>
-                    <div onClick={() => setVisible(false)} className='flex items-center gap-3 p-3 cursor-pointer'>
-                        <img src={assets.cross_icon} className="h-4" alt="" />
-                        <p>Back</p>
-                    </div>
-                    <NavLink onClick={() => setVisible(false)} className='border-y py-2 pl-6' to='/'>HOME</NavLink>
-                    <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border-b' to='/collections'>COLLECTIONS</NavLink>
-
-                    <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border-b' to='/about'>ABOUT</NavLink>
-
-                    <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border-b' to='/contact'>CONTACT</NavLink>
-                </div>
-            </div> */}
-
-            {/* Cart Items Views  */}
-            {/* <div className={`absolute inset-0 lg:w-96 overflow-hidden z-50 bg-white transition-all w-full h-full ${visible ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className='flex flex-col p-5 text-gray-600'>
-                    <div onClick={() => setVisible(false)} className='flex items-center gap-3 p-3 cursor-pointer'>
-                        <img src={assets.cross_icon} className="h-4" alt="" />
-                        <p>Back</p>
-                    </div>
-                    <div className="flex flex-col gap-10 pt-5">
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/'>HOME</NavLink>
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/collections'>COLLECTIONS</NavLink>
-
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/about'>ABOUT</NavLink>
-
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/contact'>CONTACT</NavLink>
-                    </div>
-                </div>
+            {/* sidebar Menu*/}
+            <div className={`top-0 bottom-0 z-50 bg-white absolute transition-all sm:hidden duration-1000 w-full h-full ${visible ? 'translate-x-0 left-0 right-0' : 'translate-x-full'}`}>
+                <MobileBottomMenu setVisible={setVisible} />
             </div>
-            <div className={`absolute inset-0 overflow-hidden z-50 bg-white transition-all w-full h-full ${visible ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className='flex flex-col p-5 text-gray-600'>
-                    <div onClick={() => setVisible(false)} className='flex items-center gap-3 p-3 cursor-pointer'>
-                        <img src={assets.cross_icon} className="h-4" alt="" />
-                        <p>Back</p>
-                    </div>
-                    <div className="flex flex-col gap-10 pt-5">
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/'>HOME</NavLink>
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/collections'>COLLECTIONS</NavLink>
 
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/about'>ABOUT</NavLink>
 
-                        <NavLink onClick={() => setVisible(false)} className='nav-link-sm' to='/contact'>CONTACT</NavLink>
-                    </div>
-                </div>
-            </div> */}
+            {/* Cart Menu  */}
+            <div className={`absolute top-0 -right-[100px] pr-[100px]
+                z-50 bg-white w-[400px] h-full ${cartMenu ? 'block' : 'hidden'}`}>
+                <CartMenu setCartMenu={setCartMenu} />
+            </div>
 
         </nav>
     )

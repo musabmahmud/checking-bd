@@ -13,8 +13,8 @@ const ProductItem = ({ id, image, name, price }) => {
                 <img loading="lazy" className='rounded-t-md hover:scale-110 transition ease-in-out' src={`http://admin.glorebd.com/public/storage/product/${image}`} alt={name} />
             </div>
             <div className='flex flex-col justify-between mx-auto p-3'>
-                <p className="">{name}</p>
-                <p className='text-right font-bold text-[#C43882FF]'>{currency} {price}</p>
+                <p className="font-bold text-gray-500">{name}</p>
+                <p className='text-right font-semibold text-pink'>{currency}{price}</p>
             </div>
         </Link>)
         :
@@ -30,8 +30,7 @@ const ProductItem = ({ id, image, name, price }) => {
                     <div className="bg-slate-200 rounded h-40"></div>
                 </div>
             </div>
-        </div>
-        )
+        </div>)
 }
 
 export default ProductItem
